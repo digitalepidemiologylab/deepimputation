@@ -14,11 +14,6 @@ from usefulfunctions import *
 PATHINPUT='./'
 VERBOSE=False
 FILEBATCHSIZE=2
-####Intermediate variables to make the encoding a bit more clear
-FBP = int(math.pow(2,28)) #FIRST_ALLELE_BIT_POS
-NL = {"A":int(1), "T":int(2),"G":int(4), "C":int(8)} #NUCLEOTIDE_LABELS
-#SVE= SVE= [NL["A"]*FBP, NL["T"]*FBP, NL["G"]*FBP, NL["C"]*FBP, NL["A"]*FBP+SBP, NL["T"]*FBP+SBP, NL["G"]*FBP+SBP, NL["C"]*FBP+SBP] #SNPSVALUESENCODED --> A-C 1st allele and then A-C 2nd allele
-SVE= [NL["A"]*FBP, NL["T"]*FBP, NL["G"]*FBP, NL["C"]*FBP, (NL["A"])*FBP*16, (NL["T"])*FBP*16, (NL["G"])*FBP*16, (NL["C"])*FBP*16] #SNPSVALUESENCODED --> A-C 1st allele and then A-C 2nd allele
 
 ####Variables
 listdir = []
