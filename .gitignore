@@ -1,2 +1,4 @@
 22
 floatfiles
+__pycache__/
+*.pyc
