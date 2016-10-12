@@ -1,4 +1,3 @@
-#! /home/ec2-user/anaconda3/bin/python
 import os
 import pandas as pd
 import math
@@ -6,21 +5,13 @@ from joblib import Parallel, delayed
 import time
 
 from usefulfunctions import *
+from params import *
 
 ###########################################################################################
-####useful variables and constants
+####useful variables
 ###########################################################################################
-
-####Constants
-PATHINPUT='./'
-VERBOSE=False
-FILEBATCHSIZE=2
-
-####Variables
 listdir = []
 listfiles = []
-
-
 ###########################################################################################
 ####It actually starts here
 ###########################################################################################
@@ -32,7 +23,7 @@ else:
 	os.system("rm -rf {}/floatfiles/*".format(PATHINPUT))
 
 
-listdir = list_elements(PATHINPUT+"/", _type="dir", VERBOSE=True, exception=[PATHINPUT+"floatfiles", PATHINPUT+"/floatfiles"])
+listdir = list_elements(PATHINPUT+"/", _type="dir", VERBOSE=True, exception=[PATHINPUT+"floatfiles", PATHINPUT+"/floatfiles", PATHINPUT+"__pycache__", PATHINPUT+"ec2-user@ec2-54-93-98-88.eu-central-1.compute.amazonaws.com"])
 
 print(listdir)
 

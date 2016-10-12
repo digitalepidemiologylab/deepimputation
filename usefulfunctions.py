@@ -6,26 +6,12 @@ import subprocess
 import os
 import math
 import glob
+from params import *
 
-##########################################################################################################################
-####////////////////////////////////////////////////////VARIABLES\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\####
-
-FBP = int(math.pow(2,28)) #FIRST_ALLELE_BIT_POS
-NL = {"A":int(1), "T":int(2),"G":int(4), "C":int(8)} #NUCLEOTIDE_LABELS
-SVE= [NL["A"]*FBP, NL["T"]*FBP, NL["G"]*FBP, NL["C"]*FBP, (NL["A"])*FBP*16, (NL["T"])*FBP*16, (NL["G"])*FBP*16, (NL["C"])*FBP*16] #SNPSVALUESENCODED --> A-C 1st allele and then A-C 2nd allele
-
-
-LN = {int((NL["C"])*FBP*16):"C2", #Reverse dictionnary to decode information
- int((NL["G"])*FBP*16):"G2",
- int((NL["T"])*FBP*16):"T2",
- int((NL["A"])*FBP*16):"A2",
- int(NL["C"]*FBP):"C1",
- int(NL["G"]*FBP):"G1",
- int(NL["T"]*FBP):"T1",
- int(NL["A"]*FBP):"A1"}
 
 ##########################################################################################################################
 ####////////////////////////////////////////////////////FUNCTIONS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\####
+
 
 ####List elements in path, _type can be "files", "dir", "all"; exception can be any file you don't want to add in the list
 def list_elements(PATH, _type="files", extension='', VERBOSE=False, sort=True, exception=[]):

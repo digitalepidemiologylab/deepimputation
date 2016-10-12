@@ -3,10 +3,7 @@ import random
 import pandas as pd
 
 from usefulfunctions import *
-
-PATH = "./"
-nbtests = 10000
-nbfilesmax = 10
+from params import *
 
 
 errorsal1 = 0
@@ -14,9 +11,9 @@ errorsal2 = 0
 listpbal1 = []
 listpbal2 = []
 
-_meta = pd.read_csv(PATH+"22/_meta.txt.gz", sep = "\t", index_col=False).drop(["#CHROM","ID","QUAL", "FILTER", "INFO", "FORMAT"], 1)
+_meta = pd.read_csv(PATHINPUT+"22/_meta.txt.gz", sep = "\t", index_col=False).drop(["#CHROM","ID","QUAL", "FILTER", "INFO", "FORMAT"], 1)
 
-files = list_elements(PATH+"floatfiles/22/", extension = ".txt.gz")
+files = list_elements(PATHINPUT+"floatfiles/22/", extension = ".txt.gz")
 
 
 for j in range(min(nbfilesmax, len(files))) :
@@ -25,7 +22,7 @@ for j in range(min(nbfilesmax, len(files))) :
 	name = testfile.split("/")[-1].split(".")[0]
 
 
-	_meta["originaldata"] = pd.read_csv(PATH+"/22/"+name +"_"+ name + ".txt.gz", index_col=None, header=None)
+	_meta["originaldata"] = pd.read_csv(PATHINPUT+"/22/"+name +"_"+ name + ".txt.gz", index_col=None, header=None)
 
 	_meta["totest"] = pd.read_csv(testfile,  index_col = None, header = None)
 
