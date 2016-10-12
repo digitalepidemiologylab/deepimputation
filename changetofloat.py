@@ -4,6 +4,7 @@ import pandas as pd
 import math
 from joblib import Parallel, delayed
 import time
+import logging
 
 from usefulfunctions import *
 from params import *
@@ -23,6 +24,13 @@ CHROMTOBEPROCESSED = %%%%%SELECTYOURFAVORITECHROMOSOME%%%%% ####value replaced p
 #	quit()
 #else:
 #	os.system("rm -rf {}/floatfiles/*".format(PATHINPUT))
+
+
+old_stdout = sys.stdout
+
+log_file = open("./log{}.log".format(CHROMTOBEPROCESSED),"w")
+
+sys.stdout = log_file
 
 
 listdir = [PATHINPUT+"/"+str(CHROMTOBEPROCESSED)] #list_elements(PATHINPUT+"/", _type="dir", VERBOSE=True, exception=[PATHINPUT+"floatfiles", PATHINPUT+"/floatfiles", PATHINPUT+"__pycache__", PATHINPUT+"ec2-user@ec2-54-93-98-88.eu-central-1.compute.amazonaws.com"])
@@ -84,3 +92,7 @@ for dirs in listdir:
 	timepoints.append(time.time())
 	print("Processing {0} finished after {1} ".format(dirs, timepoints[-1]-timepoints[-2]))
 
+
+sys.stdout = old_stdout
+
+log_file.close()
