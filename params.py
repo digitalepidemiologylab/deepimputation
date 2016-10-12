@@ -24,5 +24,5 @@ LN = {int((NL["C"])*FBP*16):"C2", #Reverse dictionnary to decode information
 FILEBATCHSIZE=25
 
 ##########Testdecoding.py
-nbtests = 10000
-nbfilesmax = 100
+nbtests = 100
+nbfilesmax = 10
