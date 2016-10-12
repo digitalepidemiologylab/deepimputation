@@ -18,11 +18,11 @@ CHROMTOBEPROCESSED = %%%%%SELECTYOURFAVORITECHROMOSOME%%%%% ####value replaced p
 ####It actually starts here
 ###########################################################################################
 
-if (PATHINPUT[0] == "/") and (len(PATHINPUT)<=1):
-	print("Wrong path to data, be careful...")
-	quit()
-else:
-	os.system("rm -rf {}/floatfiles/*".format(PATHINPUT))
+#if (PATHINPUT[0] == "/") and (len(PATHINPUT)<=1):
+#	print("Wrong path to data, be careful...")
+#	quit()
+#else:
+#	os.system("rm -rf {}/floatfiles/*".format(PATHINPUT))
 
 
 listdir = [PATHINPUT+"/"+str(CHROMTOBEPROCESSED)] #list_elements(PATHINPUT+"/", _type="dir", VERBOSE=True, exception=[PATHINPUT+"floatfiles", PATHINPUT+"/floatfiles", PATHINPUT+"__pycache__", PATHINPUT+"ec2-user@ec2-54-93-98-88.eu-central-1.compute.amazonaws.com"])

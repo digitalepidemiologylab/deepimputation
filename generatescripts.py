@@ -9,8 +9,8 @@ temp = f.read()
 f.close()
 
 for chrom in range(22) :
-	f = open("./Versions/new-job-"+str(chrom)+".sh", "w")
-	f.write(temp.replace("%%%%%SELECTYOURFAVORITECHROMOSOME%%%%%", str(chrom)))
+	f = open("./Versions/new-job-"+str(chrom)+".py", "w")
+	f.write(temp.replace("%%%%%SELECTYOURFAVORITECHROMOSOME%%%%%", str(chrom+1)))
 	f.close()
 	print(chrom)
 

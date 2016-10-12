@@ -3,10 +3,10 @@
 ITER=0
 
 
-for _file in `ls ./Versions/new-job*`
+for _file in `ls ./Versions/new-job*.py`
 do
 	echo $_file
-	nohup python -u $_file > "./Versions/log$ITER.out" &
+	nohup python -u $_file &> "./Versions/log$ITER.out" &
 	ITER=$((ITER+1))
 
 
