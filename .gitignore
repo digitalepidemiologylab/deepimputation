@@ -7,3 +7,5 @@ nohub.out
 log.txt
 paramscustom.py
 Versions
+*.log
+LOGS
