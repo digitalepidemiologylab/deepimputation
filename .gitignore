@@ -2,3 +2,5 @@
 floatfiles
 __pycache__/
 *.pyc
+log.out
+nohub.out

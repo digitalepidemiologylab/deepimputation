@@ -5,7 +5,7 @@ import pandas as pd
 from usefulfunctions import *
 
 PATH = "./"
-nbtests = 100
+nbtests = 10000
 nbfilesmax = 10
 
 
