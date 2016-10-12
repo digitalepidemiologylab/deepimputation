@@ -5,7 +5,7 @@ import pandas as pd
 from usefulfunctions import *
 
 PATH = "./"
-nbtests = 1000
+nbtests = 100
 nbfilesmax = 10
 
 
@@ -19,7 +19,7 @@ _meta = pd.read_csv(PATH+"22/_meta.txt.gz", sep = "\t", index_col=False).drop(["
 files = list_elements(PATH+"floatfiles/22/", extension = ".txt.gz")
 
 
-for testfile in range(min(nbfilesmax, len(files))) :
+for j in range(min(nbfilesmax, len(files))) :
 
 	testfile = random.choice(files)
 	name = testfile.split("/")[-1].split(".")[0]
@@ -51,11 +51,11 @@ for testfile in range(min(nbfilesmax, len(files))) :
 			errorsal2 +=1
 			listpbal2.append(position)
 
+	
+		printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1)
 
-		printProgress(i,nbtests*min(nbfilesmax, len(files)))
 
 
+print("\nAllele 1 errors : {0}\nAllele 2 errors : {1}\ntotal errors : {2}".format(errorsal1, errorsal2, errorsal1+errorsal2))
 
-print("\nerrors for allele 1 : {0}\nerrors for allele 2 : {1}\ntotal errors : {2}\n".format(errorsal1, errorsal2, errorsal1+errorsal2))
-
-print("\nIn total : {}% errors !".format(100*(errorsal1+errorsal2)/(2*nbtests*min(nbfilesmax, len(files)))))
+print("In total : {}% errors !\n".format(100*(errorsal1+errorsal2)/(2*nbtests*min(nbfilesmax, len(files)))))
