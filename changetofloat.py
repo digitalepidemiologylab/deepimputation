@@ -96,3 +96,7 @@ for dirs in listdir:
 sys.stdout = old_stdout
 
 log_file.close()
+
+if not os.path.isdir("./LOGS"):
+	subprocess.call("mkdir ./LOGS", shell = True)
+subprocess.call("mv ./log{}.log ./LOGS/".format(CHROMTOBEPROCESSED), shell = True)
