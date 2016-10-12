@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 import math
 
 ##########General
-PATHINPUT = "./"
+PATHINPUT = "/home/olivier/1000genomeprocesseddata/"
 VERBOSE = False
 
 FBP = int(math.pow(2,28)) #FIRST_ALLELE_BIT_POS
@@ -20,7 +21,7 @@ LN = {int((NL["C"])*FBP*16):"C2", #Reverse dictionnary to decode information
 
 
 #########Changetofloat.py
-FILEBATCHSIZE=2
+FILEBATCHSIZE=25
 
 ##########Testdecoding.py
 nbtests = 10000
