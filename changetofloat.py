@@ -13,6 +13,7 @@ from params import *
 ###########################################################################################
 listdir = []
 listfiles = []
+CHROMTOBEPROCESSED = %%%%%SELECTYOURFAVORITECHROMOSOME%%%%% ####value replaced py the script generate scripts
 ###########################################################################################
 ####It actually starts here
 ###########################################################################################
@@ -24,9 +25,8 @@ else:
 	os.system("rm -rf {}/floatfiles/*".format(PATHINPUT))
 
 
-listdir = list_elements(PATHINPUT+"/", _type="dir", VERBOSE=True, exception=[PATHINPUT+"floatfiles", PATHINPUT+"/floatfiles", PATHINPUT+"__pycache__", PATHINPUT+"ec2-user@ec2-54-93-98-88.eu-central-1.compute.amazonaws.com"])
+listdir = [PATHINPUT+"/"+str(CHROMTOBEPROCESSED)] #list_elements(PATHINPUT+"/", _type="dir", VERBOSE=True, exception=[PATHINPUT+"floatfiles", PATHINPUT+"/floatfiles", PATHINPUT+"__pycache__", PATHINPUT+"ec2-user@ec2-54-93-98-88.eu-central-1.compute.amazonaws.com"])
 
-print(listdir)
 
 if not os.path.isdir(PATHINPUT+"/floatfiles") :
 	os.mkdir(PATHINPUT+"/floatfiles")
