@@ -4,11 +4,13 @@ import pandas as pd
 import math
 from joblib import Parallel, delayed
 import time
+import datetime
 import logging
 
 from usefulfunctions import *
 from params import *
 
+print("Program started at {}".format(str(datetime.datetime.now())))
 ###########################################################################################
 ####useful variables
 ###########################################################################################
@@ -90,7 +92,7 @@ for dirs in listdir:
 			print("{0}/{1} files processed after {2}h{3}m{4}s".format(nbprocessedfiles, len(listfiles),math.floor(h),math.floor(m),math.floor(s)))
 
 	timepoints.append(time.time())
-	print("Processing {0} finished after {1} ".format(dirs, timepoints[-1]-timepoints[-2]))
+	print("Processing {0} finished after {1}. Date : {5}".format(dirs, timepoints[-1]-timepoints[-2], str(datetime.datetime.now())))
 
 
 sys.stdout = old_stdout
