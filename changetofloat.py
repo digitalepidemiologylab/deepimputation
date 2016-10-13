@@ -10,7 +10,6 @@ import logging
 from usefulfunctions import *
 from params import *
 
-print("Program started at {}".format(str(datetime.datetime.now())))
 ###########################################################################################
 ####useful variables
 ###########################################################################################
@@ -34,6 +33,7 @@ log_file = open("./log{}.log".format(CHROMTOBEPROCESSED),"w")
 
 sys.stdout = log_file
 
+print("Program started at {}".format(str(datetime.datetime.now())))
 
 listdir = [PATHINPUT+"/"+str(CHROMTOBEPROCESSED)] #list_elements(PATHINPUT+"/", _type="dir", VERBOSE=True, exception=[PATHINPUT+"floatfiles", PATHINPUT+"/floatfiles", PATHINPUT+"__pycache__", PATHINPUT+"ec2-user@ec2-54-93-98-88.eu-central-1.compute.amazonaws.com"])
 
