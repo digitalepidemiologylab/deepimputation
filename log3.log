@@ -1,7 +1,0 @@
-Processing /home/olivier/1000genomeprocesseddata//3
-Number of.txt.gz files found in /home/olivier/1000genomeprocesseddata//3/ : 2504
-25/2504 files processed after 0.0h15.0m4.0s
-An unexpected error occurred while tokenizing input
-The following traceback may be corrupted or invalid
-The error message is: ('EOF in multi-line statement', (20, 0))
-
