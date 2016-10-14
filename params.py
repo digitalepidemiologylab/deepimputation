@@ -2,7 +2,7 @@
 import math
 
 ##########General
-PATHINPUT = "/home/olivier/1000genomeprocesseddata/"
+PATHINPUT = "/mount/SDF/1000genomeprocesseddata/"
 VERBOSE = False
 
 FBP = int(math.pow(2,28)) #FIRST_ALLELE_BIT_POS
@@ -21,7 +21,7 @@ LN = {int((NL["C"])*FBP*16):"C2", #Reverse dictionnary to decode information
 
 
 #########Changetofloat.py
-FILEBATCHSIZE=25
+FILEBATCHSIZE=1
 
 ##########Testdecoding.py
 nbtests = 100
