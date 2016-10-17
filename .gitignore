@@ -6,7 +6,7 @@ __pycache__/
 log.out
 nohub.out
 log.txt
-paramscustom.py
+params.py
 Versions
 *.log
 LOGS

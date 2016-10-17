@@ -3,9 +3,12 @@ import os
 from usefulfunctions import *
 import random
 
+if not os.path.isfile("./params.py") : #### If custom version of params doesn't exist, copy template
+	subprocess.call("cp paramstemplate.py params.py", shell = True)
+from params import *
+
 numberofjobs = 4
 tobeprocessed = []
-
 
 ####Clean
 if not os.path.isdir("Versions") :

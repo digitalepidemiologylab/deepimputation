@@ -23,7 +23,7 @@ if __name__ == "__main__" :
 
 
 	#### Change output to log files
-	if LOGGING :
+	if LOGGING == True:
 		old_stdout = sys.stdout
 		log_file = open("./log{}.log".format(CHROMTOBEPROCESSED),"w")
 		sys.stdout = log_file
@@ -79,7 +79,7 @@ if __name__ == "__main__" :
 	timepoints.append(time.time())
 	print("Processing {0} finished after {1}. Date : {5}".format(dirs, timepoints[-1]-timepoints[-2], str(datetime.datetime.now())))
 
-	if LOGGING :
+	if LOGGING == True:
 		sys.stdout = old_stdout
 		log_file.close()
 
