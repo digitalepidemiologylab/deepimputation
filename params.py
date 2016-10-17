@@ -4,6 +4,7 @@ import math
 ##########General
 PATHINPUT = "/mount/SDF/1000genomeprocesseddata/"
 VERBOSE = False
+LOGGING = True
 
 FBP = int(math.pow(2,28)) #FIRST_ALLELE_BIT_POS
 NL = {"A":int(1), "T":int(2),"G":int(4), "C":int(8)} #NUCLEOTIDE_LABELS

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from joblib import Parallel, delayed
+#from joblib import Parallel, delayed
 import re
 import pandas as pd
 import sys
@@ -7,8 +7,8 @@ import subprocess
 import os
 import math
 import glob
+import threading
 from params import *
-
 
 ##########################################################################################################################
 ####////////////////////////////////////////////////////FUNCTIONS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\####
@@ -57,6 +57,7 @@ def natural_sort(l):
 	alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
 	return sorted(l, key = alphanum_key)
 
+
 def savesamples(PATH, chromosome, dataframe, listenames,i, namedir="/floatfiles/") :
 
 		#### Save 
@@ -65,11 +66,9 @@ def savesamples(PATH, chromosome, dataframe, listenames,i, namedir="/floatfiles/
 		####compressing file
 		subprocess.call("gzip {}".format(PATH+namedir+chromosome+"/"+listenames[i]+".txt"),shell=True)
 
-
-def wrightencodeoutput(PATH, chromosome, dataframe, SVE, listenames, namedir="/floatfiles/") :
+def writeencodeoutput(PATH, chromosome, dataframe, SVE, listenames, namedir="/floatfiles/") :
 
 	for i in range(len(listenames)) :
-
 		#### First allele encoding
 		dataframe.loc[((dataframe.REF == "A") & (dataframe.loc[:,listenames[i]].str[0] == "0" )), "output"+listenames[i]] = SVE[0]#### REF
 		dataframe.loc[((dataframe.REF == "T") & (dataframe.loc[:,listenames[i]].str[0] == "0" )), "output"+listenames[i]] = SVE[1]
@@ -94,12 +93,17 @@ def wrightencodeoutput(PATH, chromosome, dataframe, SVE, listenames, namedir="/f
 
 		#### Add position
 		dataframe.loc[:, "output"+listenames[0]] +=  dataframe.POS
-
-	#print(dataframe)
-
 	
-	Parallel(n_jobs=len(listenames))(delayed(savesamples)(PATH, chromosome, dataframe, listenames, i, namedir="/floatfiles/") for i in range(len(listenames)))
-
+	#### Wright files
+	
+	jobs = []
+	for i in range(len(listenames)):
+		thread = threading.Thread(target=savesamples(PATH, chromosome, dataframe, listenames, i, namedir="/floatfiles/"))
+		jobs.append(thread)
+	for j in jobs :
+		j.start()
+	for j in jobs :
+		j.join()
 
 def printProgress(iteration, total, prefix = '', suffix = '', decimals = 1, barLength = 100):
 	"""
@@ -146,11 +150,7 @@ def  decode_position(totest, LN) :
 		elif totest -encAL1 -encAL2 < FBP:
 			position = int(totest - encAL1 -encAL2)
 
-		#print("#### AL2 {0}\n#### AL1 {1}\n#### POS {2}\n#### diff {3}".format(encAL2, encAL1,position ,totest- encAL1 -encAL2))
-
 	position= int(position/2) #######################################################################################################################Didn't figure yet why I obtained the position twice ...
-
-	#print("Position : {0}; AL1 : {1}, AL2 : {2}\n".format(position, AL1, AL2))
 
 	return AL1[0], AL2[0], position
 
