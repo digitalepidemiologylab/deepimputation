@@ -149,7 +149,6 @@ def  decode_position(totest, LN) :
 
 		elif totest -encAL1 -encAL2 < FBP:
 			position = int(totest - encAL1 -encAL2)
-
 	position= int(position/2) #######################################################################################################################Didn't figure yet why I obtained the position twice ...
 
 	return AL1[0], AL2[0], position

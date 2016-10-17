@@ -8,6 +8,7 @@ import datetime
 from usefulfunctions import *
 from params import *
 
+LOGGING = False
 if LOGGING==True :
 	old_stdout = sys.stdout
 	log_file = open("./logtestdecode{}.log".format(21),"w")
@@ -36,7 +37,6 @@ for j in range(min(nbfilesmax, len(files))) :
 	for i in range(nbtests):
 		totest = random.choice(_meta.totest.tolist())
 		A1, A2, position = decode_position(totest, LN)
-
 		originalalleles = _meta.loc[(_meta.POS == position), :]["originaldata"].tolist()[0].split("/")
 		ref =  _meta.loc[(_meta.POS == position), :]["REF"].tolist()[0]
 		alt =  _meta.loc[(_meta.POS == position), :]["ALT"].tolist()[0]
@@ -57,7 +57,8 @@ for j in range(min(nbfilesmax, len(files))) :
 
 		
 		#printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1)
-		print("{0}/{1} files tested. Date : {2}".format(i, nbtests, str(datetime.datetime.now())))
+		if VERBOSE == True :
+			print("{0}/{1} files tested. Date : {2}".format(i, nbtests, str(datetime.datetime.now())))
 
 
 print("\nAllele 1 errors : {0}\nAllele 2 errors : {1}\ntotal errors : {2}".format(errorsal1, errorsal2, errorsal1+errorsal2))
