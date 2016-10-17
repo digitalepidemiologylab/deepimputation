@@ -2,15 +2,16 @@
 import math
 import random
 import pandas as pd
+import time
+import datetime
 
 from usefulfunctions import *
 from params import *
 
-old_stdout = sys.stdout
-
-log_file = open("./logtestdecode{}.log".format(21),"w")
-
-sys.stdout = log_file
+if LOGGING==True :
+	old_stdout = sys.stdout
+	log_file = open("./logtestdecode{}.log".format(21),"w")
+	sys.stdout = log_file
 
 errorsal1 = 0
 errorsal2 = 0
@@ -19,7 +20,7 @@ listpbal2 = []
 
 _meta = pd.read_csv(PATHINPUT+"/21/_meta.txt.gz", sep = "\t", index_col=False).drop(["#CHROM","ID","QUAL", "FILTER", "INFO", "FORMAT"], 1)
 
-files = list_elements(PATHINPUT+"encodeddata/21/", extension = ".txt.gz")
+files = list_elements(PATHINPUT+"/encodeddata/21/", extension = ".txt.gz")
 
 
 for j in range(min(nbfilesmax, len(files))) :
@@ -54,16 +55,16 @@ for j in range(min(nbfilesmax, len(files))) :
 			errorsal2 +=1
 			listpbal2.append(position)
 
-	
+		
 		#printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1)
-
+		print("{0}/{1} files tested. Date : {2}".format(i, nbtests, str(datetime.datetime.now())))
 
 
 print("\nAllele 1 errors : {0}\nAllele 2 errors : {1}\ntotal errors : {2}".format(errorsal1, errorsal2, errorsal1+errorsal2))
 
 print("In total : {}% errors !\n".format(100*(errorsal1+errorsal2)/(2*nbtests*min(nbfilesmax, len(files)))))
 
-sys.stdout = old_stdout
-
-log_file.close()
+if LOGGING==True :
+	sys.stdout = old_stdout
+	log_file.close()
 

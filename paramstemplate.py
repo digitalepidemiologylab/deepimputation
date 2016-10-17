@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import math
 
+##########################################################   TEMPLATE ---> DO NOT MODIFY ! MAKE YOUR CHANGES TO THE FILE PARAMS.PY
 ##########General
 PATHINPUT = "/mount/SDF/1000genomeprocesseddata/"
 VERBOSE = False
