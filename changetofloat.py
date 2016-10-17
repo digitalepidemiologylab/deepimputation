@@ -77,7 +77,7 @@ if __name__ == "__main__" :
 			print("{0}/{1} files processed after {2}h{3}m{4}s. Date : {5}".format(nbprocessedfiles, len(listfiles),math.floor(h),math.floor(m),math.floor(s),str(datetime.datetime.now())))
 
 	timepoints.append(time.time())
-	print("Processing {0} finished after {1}. Date : {5}".format(dirs, timepoints[-1]-timepoints[-2], str(datetime.datetime.now())))
+	print("Processing {0} finished after {1}. Date : {2}".format(dirs, timepoints[-1]-timepoints[-2], str(datetime.datetime.now())))
 
 	if LOGGING == True:
 		sys.stdout = old_stdout
