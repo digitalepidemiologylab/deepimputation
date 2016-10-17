@@ -12,8 +12,8 @@ if not os.path.isdir("Versions") :
 	os.mkdir("Versions")
 else :
 	subprocess.call("rm ./Versions/*.py", shell = True)
-subprocess.call("rm ./*log*.log")
-subprocess.call("rm ./nohup.out")
+subprocess.call("rm ./*log*.log", shell = True)
+subprocess.call("rm ./nohup.out", shell = True)
 
 #### Verify which chroms where not already processed and find a subset to work with
 if not os.path.isdir("./LOGS") :
