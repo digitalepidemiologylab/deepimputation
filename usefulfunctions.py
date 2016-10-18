@@ -133,11 +133,11 @@ def  decode_position(totest, LN) :
 	encAL1 = FBP
 	encAL2 = math.pow(2,31)
 	position = 0
-
+	_iter = 20
 	AL1=AL2 = "N"
 
 
-	while (totest - encAL2 -encAL1 -position != 0) and (encAL1 <= math.pow(2,33) and (encAL2 <= math.pow(2,37))) :
+	while (totest - encAL2 -encAL1 -position != 0) and (encAL1 <= math.pow(2,33) and (encAL2 <= math.pow(2,37))) and (_iter > 0):
 
 #		print(totest -encAL2 -encAL1 -position)
 		if (encAL2*2 < totest) and (encAL1 == math.pow(2,28)) and (position == 0):
@@ -148,7 +148,10 @@ def  decode_position(totest, LN) :
 			AL1 = LN[encAL1]
 		elif totest -encAL1 -encAL2 < FBP:
 			position = int(totest - encAL1 -encAL2)
-	position= int(position/2) #######################################################################################################################Didn't figure yet why I obtained the position twice ...
+		_iter -=1
 
+	position= int(position/2) #######################################################################################################################Didn't figure yet why I obtained the position twice ...
+	if _iter <= 0 :
+		position = -1
 	return AL1[0], AL2[0], position
 

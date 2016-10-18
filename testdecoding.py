@@ -16,9 +16,11 @@ else :
 	from usefulfunctions import *
 
 #####################################################################################################
-CHROMTOBETESTED = %%%%%SELECTYOURFAVORITECHROMOSOME%%%%% ####value replaced py the script generate scripts
+CHROMTOBETESTED = str(2)#%%%%%SELECTYOURFAVORITECHROMOSOME%%%%% ####value replaced py the script generate scripts
 #####################################################################################################
 
+PATHENCODED = "../fakedataset/floatfiles/"
+PATHORIGIN = "../fakedataset/"
 
 if LOGGING==True :
 	old_stdout = sys.stdout
@@ -27,11 +29,7 @@ if LOGGING==True :
 
 print("Program started at {}".format(str(datetime.datetime.now())))
 
-errorsal1 = 0
-errorsal2 = 0
-listpbal1 = []
-listpbal2 = []
-
+errors = pd.DataFrame(columns = ["File", "Supposed_position", "Error_type", "Previous_positions", "Next_position"])
 
 _meta = pd.read_csv(PATHORIGIN+"/"+CHROMTOBETESTED+"/_meta.txt.gz", sep = "\t", index_col=False).drop(["#CHROM","ID","QUAL", "FILTER", "INFO", "FORMAT"], 1)
 
@@ -39,7 +37,7 @@ files = list_elements(PATHENCODED + CHROMTOBETESTED + "/", extension = ".txt.gz"
 
 
 for j in range(min(nbfilesmax, len(files))) :
-
+	random.seed()
 	testfile = random.choice(files)
 	name = testfile.split("/")[-1].split(".")[0]
 
@@ -51,25 +49,27 @@ for j in range(min(nbfilesmax, len(files))) :
 	for i in range(nbtests):
 		totest = random.choice(_meta.totest.tolist())
 		A1, A2, position = decode_position(totest, LN)
-		#print(A1, A2, position)
-		#print(_meta.loc[(_meta.POS == position), :])
-		originalalleles = _meta.loc[(_meta.POS == position), :]["originaldata"].tolist()[0].split("/")
-		ref =  _meta.loc[(_meta.POS == position), :]["REF"].tolist()[0]
-		alt =  _meta.loc[(_meta.POS == position), :]["ALT"].tolist()[0]
 
-		if (originalalleles[0] == 0) and (A1 != ref) :
-			errorsal1 +=1
-			listpbal1.append(position)
-		if (originalalleles[0] == 1) and (A1 != alt) :
-			errorsal1 += 1
-			listpbal1.append(position)
+		if position == -1 :
+			index = error.loc[(error.totest == totest),:].index.tolist()
+			errors.loc[errors.shape[0], :] = [testfile, position, "Impossible to decode", _meta.iloc[index-1, 0], _meta.iloc[index+1, 0]]
 
-		if (originalalleles[-1] == 0) and (A1 != alt) :
-			errorsal2 +=1
-			listpbal2.append(position)
-		if (originalalleles[-1] == 1) and (A1 != alt) :
-			errorsal2 +=1
-			listpbal2.append(position)
+		originalalleles = _meta.loc[(_meta.totest == totest), :]["originaldata"].tolist()[0].split("/")
+		originalpos = _meta.loc[(_meta.totest == totest), :]["POS"].tolist()[0]
+		ref =  _meta.loc[(_meta.totest == totest), :]["REF"].tolist()[0]
+		alt =  _meta.loc[(_meta.totest == totest), :]["ALT"].tolist()[0]
+
+		if position != originalpos:
+			index = error.loc[(error.totest == totest),:].index.tolist()[0]
+			errors.loc[errors.shape[0], :] = [testfile, position, "Position", _meta.iloc[index-1, 0], _meta.iloc[index+1, 0]]
+
+		if ((originalalleles[0] == 0) and (A1 != ref)) or ((originalalleles[0] == 1) and (A1 != alt)) :
+			index = error.loc[(error.totest == totest),:].index.tolist()[0]
+			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 1", _meta.iloc[index-1, 0], _meta.iloc[index+1, 0]]
+
+		if ((originalalleles[-1] == 0) and (A1 != alt)) or ((originalalleles[-1] == 1) and (A1 != alt)) :
+			index = error.loc[(error.totest == totest),:].index.tolist()[0]
+			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 2", _meta.iloc[index-1, 0], _meta.iloc[index+1, 0]]
 
 		if not LOGGING :
 			printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
@@ -77,9 +77,18 @@ for j in range(min(nbfilesmax, len(files))) :
 			print("{0}/{1} files tested. Date : {2}".format(i, nbtests, str(datetime.datetime.now())))
 
 
-print("\nAllele 1 errors : {0}\nAllele 2 errors : {1}\ntotal errors : {2}".format(errorsal1, errorsal2, errorsal1+errorsal2))
-print("In total : {}% errors !\n".format(100*(errorsal1+errorsal2)/(2*nbtests*min(nbfilesmax, len(files)))))
+errorsal1 = errors.loc[(errors.Error_type == "Allele 1"),:].shape[0]
+errorsal2 = errors.loc[(errors.Error_type == "Allele 2"),:].shape[0]
+errorspos = errors.loc[(errors.Error_type == "Position"),:].shape[0]
+Impossibletodecode = errors.loc[(errors.Error_type == "Impossible to decode"),:].shape[0]
+totalerror = errors.shape[0]
+
+print("\nAllele 1 errors : {0}\nAllele 2 errors : {1}\nPosition errors : {2}\nImpossible to decode : {3}\nTotal errors : {4}".format(errorsal1, errorsal2, errorspos, Impossibletodecode, totalerror))
+print("In total : {}% errors !\n".format(100*(totalerror)/(nbtests*min(nbfilesmax, len(files)))))
 print("Date : {}".format(str(datetime.datetime.now())))
+
+if not errors.empty :
+	errors.to_csv("Errorsfound.csv", sep = "\t")
 
 if LOGGING==True :
 	sys.stdout = old_stdout

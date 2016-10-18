@@ -76,12 +76,13 @@ if __name__ == "__main__" :
 			print("{0}/{1} files processed after {2}h{3}m{4}s. Date : {5}".format(nbprocessedfiles, len(listfiles),math.floor(h),math.floor(m),math.floor(s),str(datetime.datetime.now())))
 
 	timepoints.append(time.time())
-	print("Processing {0} finished after {1}. Date : {2}".format(dirs, timepoints[-1]-timepoints[-2], str(datetime.datetime.now())))
+	m, s = divmod(time.time()-timepoints[0], 60)
+	h, m = divmod(m, 60)
+	print("Processing {0} finished after {1}h{2}m{3}s. Date : {4}".format(dirs, math.floor(h),math.floor(m),math.floor(s), str(datetime.datetime.now())))
 
 	if LOGGING == True:
 		sys.stdout = old_stdout
 		log_file.close()
-
-	if not os.path.isdir("./LOGS"):
-		subprocess.call("mkdir ./LOGS", shell = True)
-		subprocess.call("mv ./log{}.log ./LOGS/".format(CHROMTOBEPROCESSED), shell = True)
+		if not os.path.isdir("./LOGS"):
+			subprocess.call("mkdir ./LOGS", shell = True)
+			subprocess.call("mv ./log{}.log ./LOGS/".format(CHROMTOBEPROCESSED), shell = True)
