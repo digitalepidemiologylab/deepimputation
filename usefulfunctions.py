@@ -150,7 +150,6 @@ def  decode_position(totest, LN) :
 			position = int(totest - encAL1 -encAL2)
 		_iter -=1
 
-	position= int(position/2) #######################################################################################################################Didn't figure yet why I obtained the position twice ...
 	if _iter <= 0 :
 		position = -1
 	return AL1[0], AL2[0], position

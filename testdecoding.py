@@ -52,7 +52,7 @@ for j in range(min(nbfilesmax, len(files))) :
 
 		if position == -1 :
 			index = error.loc[(error.totest == totest),:].index.tolist()
-			errors.loc[errors.shape[0], :] = [testfile, position, "Impossible to decode", _meta.iloc[index-1, 0], _meta.iloc[index+1, 0]]
+			errors.loc[errors.shape[0], :] = [testfile, position, "Impossible to decode", _meta.iloc[max(index-1,0), 0], _meta.iloc[index+1, 0]]
 
 		originalalleles = _meta.loc[(_meta.totest == totest), :]["originaldata"].tolist()[0].split("/")
 		originalpos = _meta.loc[(_meta.totest == totest), :]["POS"].tolist()[0]
@@ -61,15 +61,15 @@ for j in range(min(nbfilesmax, len(files))) :
 
 		if position != originalpos:
 			index = error.loc[(error.totest == totest),:].index.tolist()[0]
-			errors.loc[errors.shape[0], :] = [testfile, position, "Position", _meta.iloc[index-1, 0], _meta.iloc[index+1, 0]]
+			errors.loc[errors.shape[0], :] = [testfile, position, "Position", _meta.iloc[max(index-1,0), 0], _meta.iloc[index+1, 0]]
 
 		if ((originalalleles[0] == 0) and (A1 != ref)) or ((originalalleles[0] == 1) and (A1 != alt)) :
 			index = error.loc[(error.totest == totest),:].index.tolist()[0]
-			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 1", _meta.iloc[index-1, 0], _meta.iloc[index+1, 0]]
+			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 1", _meta.iloc[max(index-1), 0], _meta.iloc[index+1, 0]]
 
 		if ((originalalleles[-1] == 0) and (A1 != alt)) or ((originalalleles[-1] == 1) and (A1 != alt)) :
 			index = error.loc[(error.totest == totest),:].index.tolist()[0]
-			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 2", _meta.iloc[index-1, 0], _meta.iloc[index+1, 0]]
+			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 2", _meta.iloc[max(index-1), 0], _meta.iloc[index+1, 0]]
 
 		if not LOGGING :
 			printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
