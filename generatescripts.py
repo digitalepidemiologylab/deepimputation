@@ -7,7 +7,7 @@ if not os.path.isfile("./params.py") : #### If custom version of params doesn't 
 	subprocess.call("cp paramstemplate.py params.py", shell = True)
 from params import *
 
-numberofjobs = 4
+numberofjobs = 8
 tobeprocessed = []
 
 ####Clean
