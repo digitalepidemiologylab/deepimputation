@@ -16,14 +16,9 @@ else :
 	from usefulfunctions import *
 
 #####################################################################################################
-CHROMTOBETESTED = str(2)#%%%%%SELECTYOURFAVORITECHROMOSOME%%%%% ####value replaced py the script generate scripts
+CHROMTOBETESTED = %%%%%SELECTYOURFAVORITECHROMOSOME%%%%% ####value replaced py the script generate scripts
 #####################################################################################################
 
-#####################################################################
-LOGGING = False ### /!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\ --> To remove !
-PATHORIGIN = PATHINPUT
-PATHENCODED = PATHINPUT+"/floatfiles/"
-#####################################################################
 
 if LOGGING==True :
 	old_stdout = sys.stdout
