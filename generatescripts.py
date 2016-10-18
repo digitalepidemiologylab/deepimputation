@@ -2,10 +2,15 @@ import subprocess
 import os
 from usefulfunctions import *
 import random
+import time
 
 if not os.path.isfile("./params.py") : #### If custom version of params doesn't exist, copy template
 	subprocess.call("cp paramstemplate.py params.py", shell = True)
-from params import *
+	from params import *
+	from usefulfunctions import *
+else:
+	from params import *
+	from usefulfunctions import *	
 
 numberofjobs = 8
 tobeprocessed = []
@@ -19,14 +24,19 @@ subprocess.call("rm ./*log*.log", shell = True)
 subprocess.call("rm ./nohup.out", shell = True)
 
 #### Verify which chroms where not already processed
+Filesinpath = list_elements(PATHINPUT, _type="dir", exception=[PATHINPUT+"encodeddata", PATHINPUT+"floatfiles"])
+print(Filesinpath)
+for i in range(len(Filesinpath)) :
+	Filesinpath[i] = int(Filesinpath[i].replace(PATHINPUT, ""))
+
 if not os.path.isdir(PATHINPUT+"/encodeddata/") :
 	os.mkdir(PATHINPUT+"/encodeddata/")
-	RemainingChrs = [i+ 1 for i in range(22)]
+	RemainingChrs = Filesinpath
 else :
 	ProcessedChrs = list_elements(PATHINPUT+"/encodeddata/",_type="dir")
 	for i in range(len(ProcessedChrs)) :
 		ProcessedChrs[i] = int(ProcessedChrs[i].replace(PATHINPUT+"/encodeddata/", ""))
-	RemainingChrs  = [i for i in range(1,23) if i not in ProcessedChrs ]
+	RemainingChrs  = [i for i in Filesinpath if i not in ProcessedChrs ]
 
 print("Remaing chromosomes to be encoded : {}".format(RemainingChrs))
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#from joblib import Parallel, delayed
 import re
 import pandas as pd
 import sys
@@ -8,6 +7,7 @@ import os
 import math
 import glob
 import threading
+import time
 from params import *
 
 ##########################################################################################################################
@@ -139,14 +139,13 @@ def  decode_position(totest, LN) :
 
 	while (totest - encAL2 -encAL1 -position != 0) and (encAL1 <= math.pow(2,33) and (encAL2 <= math.pow(2,37))) :
 
+#		print(totest -encAL2 -encAL1 -position)
 		if (encAL2*2 < totest) and (encAL1 == math.pow(2,28)) and (position == 0):
 			encAL2 *= 2
 			AL2 = LN[encAL2]
-
 		elif (encAL1*2 + encAL2 < totest) and (position == 0):
 			encAL1 *= 2
 			AL1 = LN[encAL1]
-
 		elif totest -encAL1 -encAL2 < FBP:
 			position = int(totest - encAL1 -encAL2)
 	position= int(position/2) #######################################################################################################################Didn't figure yet why I obtained the position twice ...

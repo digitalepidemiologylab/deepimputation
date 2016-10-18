@@ -2,7 +2,6 @@
 import os
 import pandas as pd
 import math
-from joblib import Parallel, delayed
 import time
 import datetime
 
@@ -37,7 +36,7 @@ if __name__ == "__main__" :
 		os.mkdir(PATHINPUT+"/floatfiles")
 	print("Processing {}".format(dirs))	
 
-	chromosome = dirs.split("/")[-1]
+	chromosome = str(CHROMTOBEPROCESSED)
 	if not os.path.isdir(PATHINPUT+"/floatfiles/"+chromosome) :
 		os.mkdir(PATHINPUT+"/floatfiles/"+chromosome)
 
@@ -55,7 +54,7 @@ if __name__ == "__main__" :
 
 	for files in listfiles :
 
-		samplename = files.split("_")[0].split("/")[-1]
+		samplename = files.split("/")[-1].split(".")[0].split("_")[-1]
 		liste.append(samplename)
 
 		df[samplename] = pd.read_csv(files, index_col=None, header=None)
@@ -85,4 +84,4 @@ if __name__ == "__main__" :
 
 	if not os.path.isdir("./LOGS"):
 		subprocess.call("mkdir ./LOGS", shell = True)
-	subprocess.call("mv ./log{}.log ./LOGS/".format(CHROMTOBEPROCESSED), shell = True)
+		subprocess.call("mv ./log{}.log ./LOGS/".format(CHROMTOBEPROCESSED), shell = True)
