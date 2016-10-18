@@ -8,8 +8,8 @@ Proggress_bar(){
 	
 }
 
-#PATH="/mount/SDF/1000genomeprocesseddata/floatfiles/*"
-_PATH="./floatfiles/*"
+_PATH="/mount/SDF/1000genomeprocesseddata/floatfiles/*"
+#_PATH="./floatfiles/*"
 
 for dirs in $_PATH; do
 chrom=$(basename $dirs)
