@@ -26,7 +26,7 @@ if LOGGING==True :
 
 print("Program started at {}".format(str(datetime.datetime.now())))
 
-errors = pd.DataFrame(columns = ["File", "Supposed_position", "Error_type", "Previous_positions", "Next_position"])
+errors = pd.DataFrame(columns = ["File", "Supposed_position", "Real_position", "Error_type", "Previous_positions", "Next_position"])
 
 _meta = pd.read_csv(PATHORIGIN+"/"+CHROMTOBETESTED+"/_meta.txt.gz", sep = "\t", index_col=False).drop(["#CHROM","ID","QUAL", "FILTER", "INFO", "FORMAT"], 1)
 
@@ -47,14 +47,17 @@ for j in range(min(nbfilesmax, len(files))) :
 		totest = random.choice(_meta.totest.tolist())
 		A1, A2, position = decode_position(totest, LN)
 
+
 		if position == -1 :
 			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
-			errors.loc[errors.shape[0], :] = [testfile, position, "Impossible to decode", _meta.iloc[max(index-1,0), 0], _meta.iloc[index+1, 0]]
+			errors.loc[errors.shape[0], :] = [testfile, position,_meta.iloc[max(index,0), 0], "Impossible to decode", _meta.iloc[max(index-1,0), 0], _meta.iloc[min(index+1, _meta.shape[0]), 0]]
 			if not LOGGING :
 				printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
 			if VERBOSE == True :
 				print("{0}/{1} files tested. Date : {2}".format(i, nbtests, str(datetime.datetime.now())))
 			continue
+
+		position /=2
 
 		originalalleles = _meta.loc[(_meta.totest == totest), :]["originaldata"].tolist()[0].split("/")
 		originalpos = _meta.loc[(_meta.totest == totest), :]["POS"].tolist()[0]
@@ -63,15 +66,15 @@ for j in range(min(nbfilesmax, len(files))) :
 
 		if position != originalpos:
 			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
-			errors.loc[errors.shape[0], :] = [testfile, position, "Position", _meta.iloc[max(index-1,0), 0], _meta.iloc[index+1, 0]]
+			errors.loc[errors.shape[0], :] = [testfile, position,_meta.iloc[max(index,0), 0], "Position", _meta.iloc[max(index-1,0), 0], _meta.iloc[min(index+1, _meta.shape[0]), 0]]
 
 		if ((originalalleles[0] == 0) and (A1 != ref)) or ((originalalleles[0] == 1) and (A1 != alt)) :
 			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
-			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 1", _meta.iloc[max(index-1), 0], _meta.iloc[index+1, 0]]
+			errors.loc[errors.shape[0], :] = [testfile, position,_meta.iloc[max(index,0), 0], "Allele 1", _meta.iloc[max(index-1), 0], _meta.iloc[min(index+1, _meta.shape[0]), 0]]
 
 		if ((originalalleles[-1] == 0) and (A1 != alt)) or ((originalalleles[-1] == 1) and (A1 != alt)) :
 			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
-			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 2", _meta.iloc[max(index-1), 0], _meta.iloc[index+1, 0]]
+			errors.loc[errors.shape[0], :] = [testfile, position,_meta.iloc[max(index,0), 0], "Allele 2", _meta.iloc[max(index-1), 0], _meta.iloc[min(index+1, _meta.shape[0]), 0]]
 
 		if not LOGGING :
 			printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
