@@ -89,21 +89,22 @@ def writeencodeoutput(PATH, chromosome, dataframe, SVE, listenames, namedir="/fl
 		dataframe.loc[((dataframe.ALT == "G") & (dataframe.loc[:,listenames[i]].str[-1] == "1" )), "output"+listenames[i]] += SVE[6]
 		dataframe.loc[((dataframe.ALT == "C") & (dataframe.loc[:,listenames[i]].str[-1] == "1" )), "output"+listenames[i]] += SVE[7]
 
-
-
 		#### Add position
-		dataframe.loc[:, "output"+listenames[0]] +=  dataframe.POS
+		dataframe.loc[:, "output"+listenames[i]] +=  dataframe.POS
 	
 	#### Wright files
 	
-	jobs = []
-	for i in range(len(listenames)):
-		thread = threading.Thread(target=savesamples(PATH, chromosome, dataframe, listenames, i, namedir="/floatfiles/"))
-		jobs.append(thread)
-	for j in jobs :
-		j.start()
-	for j in jobs :
-		j.join()
+	if len(listenames > 1) :
+		jobs = []
+		for i in range(len(listenames)):
+			thread = threading.Thread(target=savesamples(PATH, chromosome, dataframe, listenames, i, namedir="/floatfiles/"))
+			jobs.append(thread)
+		for j in jobs :
+			j.start()
+		for j in jobs :
+			j.join()
+	else:
+		savesamples(PATH, chromosome, dataframe, listenames, listenames[0], namedir "/floatfiles/")
 
 def printProgress(iteration, total, prefix = '', suffix = '', decimals = 1, barLength = 100):
 	"""

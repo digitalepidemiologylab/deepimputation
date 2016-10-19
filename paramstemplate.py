@@ -23,7 +23,7 @@ LN = {int((NL["C"])*FBP*16):"C2", #Reverse dictionnary to decode information
 
 
 #########Changetofloat.py
-FILEBATCHSIZE=25
+FILEBATCHSIZE=1
 
 ##########Testdecoding.py
 PATHORIGIN = PATHINPUT
