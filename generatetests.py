@@ -12,14 +12,14 @@ else:
 	from usefulfunctions import *	
 
 numberofjobs = 8
-tobeprocessed = []
+tobetested = []
 
 ####Clean
-if not os.path.isdir("Versions") :
-	os.mkdir("Versions")
+if not os.path.isdir("Tests") :
+	os.mkdir("Tests")
 else :
-	subprocess.call("rm ./Versions/*.py", shell = True)
-subprocess.call("rm ./*log*.log", shell = True)
+	subprocess.call("rm ./Tests/*.py", shell = True)
+subprocess.call("rm ./logtestdecode*.log", shell = True)
 subprocess.call("rm ./nohup.out", shell = True)
 
 #### Verify which chroms where not already processed
@@ -37,25 +37,25 @@ else :
 		ProcessedChrs[i] = int(ProcessedChrs[i].replace(PATHINPUT+"/encodeddata/", ""))
 	RemainingChrs  = [i for i in Filesinpath if i not in ProcessedChrs ]
 
-print("Remaing chromosomes to be encoded : {}".format(RemainingChrs))
+print("Encoded chromosomes to be tested : {}".format(ProcessedChrs))
 
 ####Copy template script
-f = open("changetofloat.py", "r")
+f = open("testdecoding.py", "r")
 temp = f.read()
 f.close()
 
 i = 0
 #### Pick a subset of remaining chromosomes and generate scripts for them
-while i < min(numberofjobs,len(RemainingChrs)) :
-	pick = random.choice(RemainingChrs)
-	if pick not in tobeprocessed :
-		f = open("./Versions/new_job_"+str(pick)+".py", "w")
+while i < min(numberofjobs,len(ProcessedChrs)) :
+	pick = random.choice(ProcessedChrs)
+	if pick not in tobetested :
+		f = open("./Tests/new_job_"+str(pick)+".py", "w")
 		f.write(temp.replace("%%%%%SELECTYOURFAVORITECHROMOSOME%%%%%", str(pick)))
 		f.close()
 		print(pick)
-		tobeprocessed.append(pick)
+		tobetested.append(pick)
 		i += 1
 
 
-subprocess.call("cp params.py ./Versions", shell=True)
-subprocess.call("cp usefulfunctions.py ./Versions", shell=True)
+subprocess.call("cp params.py ./Tests", shell=True)
+subprocess.call("cp usefulfunctions.py ./Tests", shell=True)

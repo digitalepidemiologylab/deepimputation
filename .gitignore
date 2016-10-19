@@ -14,3 +14,5 @@ LOGS
 encodeddata
 origin
 encoded
+*.csv
+Tests

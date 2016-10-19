@@ -16,11 +16,8 @@ else :
 	from usefulfunctions import *
 
 #####################################################################################################
-CHROMTOBETESTED = str(2)#%%%%%SELECTYOURFAVORITECHROMOSOME%%%%% ####value replaced py the script generate scripts
+CHROMTOBETESTED = str(%%%%%SELECTYOURFAVORITECHROMOSOME%%%%%) ####value replaced py the script generate scripts
 #####################################################################################################
-
-PATHENCODED = "../fakedataset/floatfiles/"
-PATHORIGIN = "../fakedataset/"
 
 if LOGGING==True :
 	old_stdout = sys.stdout
@@ -51,7 +48,7 @@ for j in range(min(nbfilesmax, len(files))) :
 		A1, A2, position = decode_position(totest, LN)
 
 		if position == -1 :
-			index = error.loc[(error.totest == totest),:].index.tolist()
+			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
 			errors.loc[errors.shape[0], :] = [testfile, position, "Impossible to decode", _meta.iloc[max(index-1,0), 0], _meta.iloc[index+1, 0]]
 
 		originalalleles = _meta.loc[(_meta.totest == totest), :]["originaldata"].tolist()[0].split("/")
@@ -60,15 +57,15 @@ for j in range(min(nbfilesmax, len(files))) :
 		alt =  _meta.loc[(_meta.totest == totest), :]["ALT"].tolist()[0]
 
 		if position != originalpos:
-			index = error.loc[(error.totest == totest),:].index.tolist()[0]
+			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
 			errors.loc[errors.shape[0], :] = [testfile, position, "Position", _meta.iloc[max(index-1,0), 0], _meta.iloc[index+1, 0]]
 
 		if ((originalalleles[0] == 0) and (A1 != ref)) or ((originalalleles[0] == 1) and (A1 != alt)) :
-			index = error.loc[(error.totest == totest),:].index.tolist()[0]
+			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
 			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 1", _meta.iloc[max(index-1), 0], _meta.iloc[index+1, 0]]
 
 		if ((originalalleles[-1] == 0) and (A1 != alt)) or ((originalalleles[-1] == 1) and (A1 != alt)) :
-			index = error.loc[(error.totest == totest),:].index.tolist()[0]
+			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
 			errors.loc[errors.shape[0], :] = [testfile, position, "Allele 2", _meta.iloc[max(index-1), 0], _meta.iloc[index+1, 0]]
 
 		if not LOGGING :
