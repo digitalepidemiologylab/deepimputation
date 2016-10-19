@@ -50,6 +50,11 @@ for j in range(min(nbfilesmax, len(files))) :
 		if position == -1 :
 			index = _meta.loc[(_meta.totest == totest),:].index.tolist()[0]
 			errors.loc[errors.shape[0], :] = [testfile, position, "Impossible to decode", _meta.iloc[max(index-1,0), 0], _meta.iloc[index+1, 0]]
+			if not LOGGING :
+				printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
+			if VERBOSE == True :
+				print("{0}/{1} files tested. Date : {2}".format(i, nbtests, str(datetime.datetime.now())))
+			continue
 
 		originalalleles = _meta.loc[(_meta.totest == totest), :]["originaldata"].tolist()[0].split("/")
 		originalpos = _meta.loc[(_meta.totest == totest), :]["POS"].tolist()[0]
@@ -85,7 +90,7 @@ print("In total : {}% errors !\n".format(100*(totalerror)/(nbtests*min(nbfilesma
 print("Date : {}".format(str(datetime.datetime.now())))
 
 if not errors.empty :
-	errors.to_csv("Errorsfound.csv", sep = "\t")
+	errors.to_csv("Errorsfoundin{}.csv".format(CHROMTOBETESTED), sep = "\t")
 
 if LOGGING==True :
 	sys.stdout = old_stdout
