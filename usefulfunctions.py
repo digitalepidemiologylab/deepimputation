@@ -94,7 +94,7 @@ def writeencodeoutput(PATH, chromosome, dataframe, SVE, listenames, namedir="/fl
 	
 	#### Wright files
 	
-	if len(listenames > 1) :
+	if len(listenames) > 1 :
 		jobs = []
 		for i in range(len(listenames)):
 			thread = threading.Thread(target=savesamples(PATH, chromosome, dataframe, listenames, i, namedir="/floatfiles/"))
@@ -104,7 +104,7 @@ def writeencodeoutput(PATH, chromosome, dataframe, SVE, listenames, namedir="/fl
 		for j in jobs :
 			j.join()
 	else:
-		savesamples(PATH, chromosome, dataframe, listenames, listenames[0], namedir "/floatfiles/")
+		savesamples(PATH, chromosome, dataframe, listenames,0, namedir="/floatfiles/")
 
 def printProgress(iteration, total, prefix = '', suffix = '', decimals = 1, barLength = 100):
 	"""

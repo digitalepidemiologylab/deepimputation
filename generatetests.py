@@ -11,7 +11,7 @@ else:
 	from params import *
 	from usefulfunctions import *	
 
-numberofjobs = 8
+numberofjobs = 22
 tobetested = []
 
 ####Clean
@@ -49,7 +49,7 @@ i = 0
 while i < min(numberofjobs,len(ProcessedChrs)) :
 	pick = random.choice(ProcessedChrs)
 	if pick not in tobetested :
-		f = open("./Tests/new_job_"+str(pick)+".py", "w")
+		f = open("./Tests/new_test_"+str(pick)+".py", "w")
 		f.write(temp.replace("%%%%%SELECTYOURFAVORITECHROMOSOME%%%%%", str(pick)))
 		f.close()
 		print(pick)

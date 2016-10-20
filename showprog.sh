@@ -11,10 +11,10 @@ Proggress_bar(){
 _PATH="/mount/SDF/1000genomeprocesseddata/floatfiles/*"
 #_PATH="./floatfiles/*"
 
+echo
 for dirs in $_PATH; do
 chrom=$(basename $dirs)
-echo $chrom
-percdone=$(ls $dirs | wc -l | awk '{print $1*100/2504"%"}')
-Proggress_bar $percdone
+percdone=$(ls $dirs | wc -l | awk '{print $1*100/2504"%%"}')
+printf "[$chrom] %s\t $percdone %s\n%s\n"
 
 done

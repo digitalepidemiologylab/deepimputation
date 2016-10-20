@@ -11,7 +11,7 @@ else:
 	from params import *
 	from usefulfunctions import *	
 
-numberofjobs = 8
+numberofjobs = 11
 tobeprocessed = []
 
 ####Clean
