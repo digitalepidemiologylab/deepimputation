@@ -11,7 +11,7 @@ else:
 	from params import *
 	from usefulfunctions import *
 
-if not os.path.isdir(PATHSUBSET+"/Subsets"):
+if not os.path.isdir(PATHSUBSET+"/Subsets"): ####Create the tree for the repartition of the dataset
 	os.mkdir(PATHSUBSET+"/Subsets")
 	os.mkdir(PATHSUBSET+"/Subsets/FULL")	
 	os.mkdir(PATHSUBSET+"/Subsets/FULL/Train")
@@ -20,6 +20,9 @@ if not os.path.isdir(PATHSUBSET+"/Subsets"):
 
 	subprocess.call(cp PATHSUBSET+"/Subsets/FULL " PATHSUBSET+"/Subsets/FULL/10_PERCENT")
 	subprocess.call(cp PATHSUBSET+"/Subsets/FULL " PATHSUBSET+"/Subsets/FULL/1_PERCENT")
+else :
+
+	if not os.path.isdir(PATHSUBSET+"/Subsets/FULL")
 
 
 listchroms = list_elements(PATHENCODED, _type = "dir")

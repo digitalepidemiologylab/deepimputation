@@ -1,20 +1,29 @@
 #! /usr/bin/sh
 
-max=100
-min=0
 
-Proggress_bar(){
-	echo $1
+Proggress(){
+
+	width=${4:-100}
+	bar=$(( $width * $2 / $3 ))
+	percent=$(( 100 * $2 / $3 ))
+	printf "[$1] %s\t $percent%% %s\t["
+	for i in $(seq 1 $bar); do printf "#" 1>&2; done
+	for i in $(seq $bar $(( $width-1 ))); do printf " " 1>&2; done
+	printf "]%s%s\n"
+
 	
 }
 
-_PATH="/mount/SDF/1000genomeprocesseddata/floatfiles/*"
-#_PATH="./floatfiles/*"
+PATHWRITTEN="/mount/SDF/1000genomeprocesseddata/floatfiles/*"
+PATHORIGIN="/mount/SDF/1000genomeprocesseddata/"
+#PATHWRITTEN="../fakedataset/encodeddata/*"
+#PATHORIGIN="../fakedataset/"
 
-echo
-for dirs in $_PATH; do
-chrom=$(basename $dirs)
-percdone=$(ls $dirs | wc -l | awk '{print $1*100/2504"%%"}')
-printf "[$chrom] %s\t $percdone %s\n%s\n"
+for dirs in $PATHWRITTEN; do
+
+	chrom=$(basename $dirs)
+	written=$(ls $dirs | wc -l)
+	totalfiles=$(ls "$PATHORIGIN/$chrom/" | wc -l)
+	Proggress $chrom $written $totalfiles
 
 done
