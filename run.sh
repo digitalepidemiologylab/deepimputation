@@ -1,6 +1,6 @@
 #! /usr/bin/sh
 
-_PATH="./Tests/"
+_PATH="./Versions/"
 
 
 scripts=$(printf %q $_PATH "new_")

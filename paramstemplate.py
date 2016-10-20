@@ -32,4 +32,12 @@ nbtests = 1000
 nbfilesmax = 100
 
 ##########Subsets.py
-PATHSUBSETS = PATHINPUT
+PATHSUBSET = PATHINPUT
+PROPTRAIN = 0.6
+PROPTEST = 0.2
+PROPVALID = 1-PROPTRAIN-PROPTEST
+COPY=False
+if COPY:
+	MOVE = "mv"
+else:
+	MOVE = "cp"

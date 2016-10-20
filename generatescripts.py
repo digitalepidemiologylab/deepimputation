@@ -23,7 +23,7 @@ subprocess.call("rm ./*log*.log", shell = True)
 subprocess.call("rm ./nohup.out", shell = True)
 
 #### Verify which chroms where not already processed
-Filesinpath = list_elements(PATHINPUT, _type="dir", exception=[PATHINPUT+"encodeddata", PATHINPUT+"floatfiles"])
+Filesinpath = list_elements(PATHINPUT, _type="dir", exception=[PATHINPUT+"encodeddata", PATHINPUT+"floatfiles", PATHINPUT+"Subsets"])
 print(Filesinpath)
 for i in range(len(Filesinpath)) :
 	Filesinpath[i] = int(Filesinpath[i].replace(PATHINPUT, ""))
