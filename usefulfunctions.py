@@ -166,7 +166,7 @@ def mask_data(PATH, percentpass, OUTPUTPATH=None) :
 
 		with gzip.open(sample, "rt", encoding='utf-8') as infile:
 			lines = infile.readlines()
-			outfile = open(OUTPUTPATH+"/"+, "w")
+			outfile = open(OUTPUTPATH+"/"+, "a")
 			outfile.write()
 			outfile.close()
 
