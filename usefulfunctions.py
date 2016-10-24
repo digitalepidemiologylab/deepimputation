@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-import re
-import pandas as pd
-import sys
-import subprocess
-import os
-import math
+import datetime
 import glob
+import gzip
+import math
+import os
+import pandas as pd
+import random
+import re
+import shutil
+import subprocess
+import sys
 import threading
 import time
-import gzip
+
 from params import *
 
 ##########################################################################################################################
@@ -28,7 +32,8 @@ def list_elements(PATH, _type="files", extension='', VERBOSE=False, sort=True, e
 				if VERBOSE :
 					print("File found at {0} : {1}".format(PATH,files))
 
-		print("Number of{0} files found in {1} : {2}".format(extension, PATH, iteratorfiles))
+		if VERBOSE :
+			print("Number of{0} files found in {1} : {2}".format(extension, PATH, iteratorfiles))
 
 
 	####List all directories
@@ -41,7 +46,8 @@ def list_elements(PATH, _type="files", extension='', VERBOSE=False, sort=True, e
 				if VERBOSE :
 					print("File found at {0} : {1}".format(PATH,files))
 
-		print("Number of{0} directories found in {1} : {2}".format(extension, PATH, iteratordir))
+		if VERBOSE :
+			print("Number of{0} directories found in {1} : {2}".format(extension, PATH, iteratordir))
 
 	if _type=="all" :
 		print("In total {0} elements found in {1}".format(iteratordir+iteratorfiles,PATHINPUT))
@@ -151,28 +157,78 @@ def decode_position(totest, LN) :
 		position = -1
 	return AL1[0], AL2[0], position
 
-def mask_data(PATH, percentpass, OUTPUTPATH=None) :
+def mask_data(_PATH, percentpass, OUTPUTPATH=None, PREFIXSUB = "/10PER_", VERBOSE=False) :
 	### percentpass = nb between 0 and 1
 
+	print("Starting to filter data from {0} at {1}. ({2} pass)".format(_PATH,datetime.datetime.now(),percentpass))
+
 	if OUTPUTPATH==None :
-		OUTPUTPATH = PATH
+		OUTPUTPATH = _PATH
+	if not LOGGING:
+		i = 0
+	chromosomes = list_elements(_PATH, _type='dir', exception = [_PATH+"/floatfiles", _PATH + "floatfiles", _PATH + "/encodeddata", _PATH + "encodeddata", _PATH + "/Subsets", _PATH + "Subsets"])
 
-	files = list_elements(PATH, extension='.txt.gz')
+	for chrom in chromosomes :
 
-	for sample in files :
-		
-		nblines = getnblines(sample)
-		subsetoflines = random.sample(range(nblines), math.floor(nblines*percentpass))
+		chromname = chrom.split("/")[-1].split("_")[-1]
+		files = list_elements(chrom +"/", extension='.txt.gz')
 
-		with gzip.open(sample, "rt", encoding='utf-8') as infile:
-			lines = infile.readlines()
-			outfile = open(OUTPUTPATH+"/"+, "a")
-			outfile.write()
-			outfile.close()
+		for sample in files :
+			
+			namesample = sample.split("/")[-1].split(".")[0].split("_")[-1]
+			nblines = getnblines(sample)
+			subsetoflines = random.sample(range(nblines), math.floor(nblines*percentpass))
 
+			with gzip.open(sample, "rt", encoding='utf-8') as infile, open(OUTPUTPATH+"/"+chromname+"/"+PREFIXSUB+namesample+".txt", "w") as outfile:
+				lines = infile.readlines()
+
+				for index in subsetoflines :
+					outfile.write(lines[index])
+			subprocess.call("gzip {}".format(OUTPUTPATH+"/"+chromname+"/"+PREFIXSUB+namesample+".txt"),shell=True)
+
+			if not LOGGING :
+				i +=1
+				printProgress(i,len(chromosomes)*len(files)-1, decimals = 3)
+			elif VERBOSE == True :
+				print("{0}/{1} files tested. Date : {2}".format(i, len(chromosomes*len(files)), str(datetime.datetime.now())))
+	print("\nData from {0} filtered at {1}. ({2} pass)".format(_PATH,datetime.datetime.now(),percentpass))
 
 def getnblines(infile) :
 	with gzip.open(infile, "rt", encoding='utf-8') as f:
 	    for i, l in enumerate(f):
 	        pass
-	return i + 1
+	return i+1
+
+def createchromdeirs(_PATH, listofchroms):
+	os.mkdir(_PATH+"/Train")
+	os.mkdir(_PATH+"/Test")
+	os.mkdir(_PATH+"/Valid")
+	for chroms in listofchroms:
+		os.mkdir(_PATH+"/Train/"+chroms)
+		os.mkdir(_PATH+"/Test/"+chroms)
+		os.mkdir(_PATH+"/Valid/"+chroms)
+
+def cutfiles(filelist, sizeofoutputfiles, OUTPUTPATH, copy=True) :
+
+	for file in filelist :
+		filename = file.split("/")[-1].split(".")[0]
+		nblines = getnblines(file)
+		nboffiles = math.ceil(nblines/sizeofoutputfiles)
+		overlapping = math.floor((sizeofoutputfiles-nblines%sizeofoutputfiles)/nboffiles)
+		
+		begin = 0
+		for i in range(nboffiles) :
+			end = min(begin + sizeofoutputfiles, nblines)
+			if end - begin < sizeofoutputfiles :
+				begin = end - sizeofoutputfiles
+			subsetoflines= range(begin, end)
+			begin += sizeofoutputfiles - overlapping
+				
+			with open(OUTPUTPATH+"/"+filename+"-"+str(i+1)+".txt", "w") as outfile, gzip.open(file, "rt", encoding='utf-8') as infile :
+				lines = infile.readlines()
+				for index in subsetoflines :
+					outfile.write(lines[index])
+			subprocess.call("gzip {}".format(OUTPUTPATH+"/"+filename+"-"+str(i+1)+".txt"),shell=True)
+
+		if not copy :
+			subprocess.call("rm {}".format(file), shell=True)
