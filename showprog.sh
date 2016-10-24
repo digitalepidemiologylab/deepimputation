@@ -16,8 +16,8 @@ Proggress(){
 
 PATHWRITTEN="/mount/SDF/1000genomeprocesseddata/floatfiles/*"
 PATHORIGIN="/mount/SDF/1000genomeprocesseddata/"
-PATHWRITTEN="../fakedataset/floatfiles/*"
-PATHORIGIN="../fakedataset/"
+#PATHWRITTEN="../fakedataset/floatfiles/*"
+#PATHORIGIN="../fakedataset/"
 
 for dirs in $PATHWRITTEN; do
 
