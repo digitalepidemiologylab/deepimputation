@@ -53,9 +53,9 @@ for chroms in listchroms :
 
 	for samples in range(math.floor(totalsamples*PROPTEST)) :
 		pick = random.choice(listsamples)
-		print("mv {0} {1}".format(pick, PATHSUBSET+"/Subsets/FULL/Test"+chroms.split("/")[-1]))
 		if not os.path.isdir(PATHSUBSET+"/Subsets/FULL/Test/"+chroms.split("/")[-1]) :
 			os.mkdir(PATHSUBSET+"/Subsets/FULL/Test/"+chroms.split("/")[-1])
+		print(PATHSUBSET+"/Subsets/FULL/Test/"+chroms.split("/")[-1])
 		subprocess.call("mv {0} {1}".format(pick, PATHSUBSET+"/Subsets/FULL/Test/"+chroms.split("/")[-1]), shell=True)
 		listsamples.remove(pick)
 
@@ -66,7 +66,10 @@ for chroms in listchroms :
 		subprocess.call("mv {0} {1}".format(pick, PATHSUBSET+"/Subsets/FULL/Valid/"+chroms.split("/")[-1]), shell=True)
 		listsamples.remove(pick)
 
-	for samples in range(len(listsamples)):
+	for samples in listsamples:
 		if not os.path.isdir(PATHSUBSET+"/Subsets/FULL/Train/"+chroms.split("/")[-1]) :
 			os.mkdir(PATHSUBSET+"/Subsets/FULL/Train/"+chroms.split("/")[-1])
 		subprocess.call("mv {0} {1}".format(samples, PATHSUBSET+"/Subsets/FULL/Train/"+chroms.split("/")[-1]), shell=True)
+
+#################Filter 90% of the positions
+

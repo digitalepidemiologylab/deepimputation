@@ -8,6 +8,7 @@ import math
 import glob
 import threading
 import time
+import gzip
 from params import *
 
 ##########################################################################################################################
@@ -56,7 +57,6 @@ def natural_sort(l):
 	convert = lambda text: int(text) if text.isdigit() else text.lower() 
 	alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
 	return sorted(l, key = alphanum_key)
-
 
 def savesamples(PATH, chromosome, dataframe, listenames,i, namedir="/floatfiles/") :
 
@@ -126,9 +126,7 @@ def printProgress(iteration, total, prefix = '', suffix = '', decimals = 1, barL
 	    sys.stdout.write('\n')
 	sys.stdout.flush()
 
-
-
-def  decode_position(totest, LN) :
+def decode_position(totest, LN) :
 
 	FBP = math.pow(2,28)
 	encAL1 = FBP
@@ -137,10 +135,8 @@ def  decode_position(totest, LN) :
 	_iter = 20
 	AL1=AL2 = "N"
 
-
 	while (totest - encAL2 -encAL1 -position != 0) and (encAL1 <= math.pow(2,33) and (encAL2 <= math.pow(2,37))) and (_iter > 0):
-
-#		print(totest -encAL2 -encAL1 -position)
+		#print(totest -encAL2 -encAL1 -position)
 		if (encAL2*2 < totest) and (encAL1 == math.pow(2,28)) and (position == 0):
 			encAL2 *= 2
 			AL2 = LN[encAL2]
@@ -155,3 +151,28 @@ def  decode_position(totest, LN) :
 		position = -1
 	return AL1[0], AL2[0], position
 
+def mask_data(PATH, percentpass, OUTPUTPATH=None) :
+	### percentpass = nb between 0 and 1
+
+	if OUTPUTPATH==None :
+		OUTPUTPATH = PATH
+
+	files = list_elements(PATH, extension='.txt.gz')
+
+	for sample in files :
+		
+		nblines = getnblines(sample)
+		subsetoflines = random.sample(range(nblines), math.floor(nblines*percentpass))
+
+		with gzip.open(sample, "rt", encoding='utf-8') as infile:
+			lines = infile.readlines()
+			outfile = open(OUTPUTPATH+"/"+, "w")
+			outfile.write()
+			outfile.close()
+
+
+def getnblines(infile) :
+	with gzip.open(infile, "rt", encoding='utf-8') as f:
+	    for i, l in enumerate(f):
+	        pass
+	return i + 1
