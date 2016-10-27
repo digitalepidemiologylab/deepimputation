@@ -15,12 +15,12 @@ else:
 	from usefulfunctions import *
 ################################################################################################################
 
-######################################################################################################
-PATHINPUT="../fakedataset/"
-PATHORIGIN = PATHINPUT
-PATHENCODED = PATHINPUT+"/encodeddata/"
-PATHSUBSET = PATHINPUT
-######################################################################################################
+# ######################################################################################################
+# PATHINPUT="../fakedataset/"
+# PATHORIGIN = PATHINPUT
+# PATHENCODED = PATHINPUT+"/encodeddata/"
+# PATHSUBSET = PATHINPUT
+# ######################################################################################################
 
 listchromsdirs = list_elements(PATHENCODED, _type = "dir")
 listofchroms = [chroms.split("/")[-1] for chroms in listchromsdirs]
