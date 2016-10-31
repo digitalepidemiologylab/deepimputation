@@ -50,14 +50,14 @@ for chroms in listchromsdirs :
 	listsamples = list_elements(chroms+"/", extension=".txt.gz")
 	totalsamples = len(listsamples)
 
-	for samples in range(math.floor(totalsamples*PROPTEST)) :
+	for samples in range(int(math.floor(totalsamples*PROPTEST))) :
 		pick = random.choice(listsamples)
 		if not os.path.isdir(PATHSUBSET+"/Subsets/FULL/Test/"+chroms.split("/")[-1]) :
 			os.mkdir(PATHSUBSET+"/Subsets/FULL/Test/"+chroms.split("/")[-1])
 		subprocess.call("mv {0} {1}".format(pick, PATHSUBSET+"/Subsets/FULL/Test/"+chroms.split("/")[-1]), shell=True)
 		listsamples.remove(pick)
 
-	for samples in range(math.floor(totalsamples*PROPVALID)) :
+	for samples in range(int(math.floor(totalsamples*PROPVALID))) :
 		pick = random.choice(listsamples)
 		if not os.path.isdir(PATHSUBSET+"/Subsets/FULL/Valid/"+chroms.split("/")[-1]) :
 			os.mkdir(PATHSUBSET+"/Subsets/FULL/Valid/"+chroms.split("/")[-1])

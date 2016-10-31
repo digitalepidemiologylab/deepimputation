@@ -7,10 +7,10 @@ for ((_chrom=1; _chrom<=22; _chrom++)); do
 	echo "Processing chrom $_chrom :"
 	_file="../1000genomeprocesseddata/$_chrom/_meta.txt.gz"
 	#_file="../fakedataset/2/_meta.txt.gz"
-	sizegrp=50000
+	sizegrp=500000
 	#sizegrp=1100
 	onecentimorgan=1000000
-	margin=100000
+	margin=$((4*$onecentimorgan))
 	#onecentimorgan=1000
 	startline=8
 	nboflines=$(($(zcat $_file | wc -l) -$startline))
@@ -31,7 +31,7 @@ for ((_chrom=1; _chrom<=22; _chrom++)); do
 			unsufficientfragmentsize=$((unsufficientfragmentsize+1))
 			lasttoosmall=$difference
 		fi
-		if [ $difference -ge $((onecentimorgan*5)) ]; then
+		if [ $difference -ge $((onecentimorgan*100)) ]; then
 			toobig=$((toobig+1))
 			lasttoobig=$difference
 		fi

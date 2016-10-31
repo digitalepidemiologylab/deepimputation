@@ -194,7 +194,7 @@ def mask_data(_PATH, percentpass, OUTPUTPATH=None, PREFIXSUB = "/10PER_", VERBOS
 	print("\nData from {0} filtered at {1}. ({2} pass)".format(_PATH,datetime.datetime.now(),percentpass))
 
 def getnblines(infile) :
-	with gzip.open(infile, "rt", encoding='utf-8') as f:
+	with gzip.open(infile, "rt") as f:
 	    for i, l in enumerate(f):
 	        pass
 	return i+1
@@ -217,14 +217,14 @@ def cutfiles(filelist, sizeofoutputfiles, OUTPUTPATH, copy=True) :
 		overlapping = math.floor((sizeofoutputfiles-nblines%sizeofoutputfiles)/nboffiles)
 		
 		begin = 0
-		for i in range(nboffiles) :
-			end = min(begin + sizeofoutputfiles, nblines)
+		for i in range(int(nboffiles)) :
+			end = int(min(begin + sizeofoutputfiles, nblines))
 			if end - begin < sizeofoutputfiles :
-				begin = end - sizeofoutputfiles
+				begin = int(end - sizeofoutputfiles)
 			subsetoflines= range(begin, end)
-			begin += sizeofoutputfiles - overlapping
+			begin += int(sizeofoutputfiles - overlapping)
 				
-			with open(OUTPUTPATH+"/"+filename+"-"+str(i+1)+".txt", "w") as outfile, gzip.open(file, "rt", encoding='utf-8') as infile :
+			with open(OUTPUTPATH+"/"+filename+"-"+str(i+1)+".txt", "w") as outfile, gzip.open(file, "rt") as infile :
 				lines = infile.readlines()
 				for index in subsetoflines :
 					outfile.write(lines[index])
