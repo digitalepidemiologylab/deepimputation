@@ -64,7 +64,7 @@ def natural_sort(l):
 	alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
 	return sorted(l, key = alphanum_key)
 
-def savesamples(PATH, chromosome, dataframe, listenames,i, namedir="/floatfiles/") :
+def save_samples(PATH, chromosome, dataframe, listenames,i, namedir="/floatfiles/") :
 
 		#### Save 
 		dataframe.loc[:, "output"+listenames[0]].to_csv(PATH+namedir+chromosome+"/"+listenames[i]+".txt", index = False, encoding = "utf8")
@@ -72,7 +72,7 @@ def savesamples(PATH, chromosome, dataframe, listenames,i, namedir="/floatfiles/
 		####compressing file
 		subprocess.call("gzip {}".format(PATH+namedir+chromosome+"/"+listenames[i]+".txt"),shell=True)
 
-def writeencodeoutput(PATH, chromosome, dataframe, SVE, listenames, namedir="/floatfiles/") :
+def write_encoded_output(PATH, chromosome, dataframe, SVE, listenames, namedir="/floatfiles/") :
 
 	for i in range(len(listenames)) :
 		#### First allele encoding
@@ -103,16 +103,16 @@ def writeencodeoutput(PATH, chromosome, dataframe, SVE, listenames, namedir="/fl
 	if len(listenames) > 1 :
 		jobs = []
 		for i in range(len(listenames)):
-			thread = threading.Thread(target=savesamples(PATH, chromosome, dataframe, listenames, i, namedir="/floatfiles/"))
+			thread = threading.Thread(target=save_samples(PATH, chromosome, dataframe, listenames, i, namedir="/floatfiles/"))
 			jobs.append(thread)
 		for j in jobs :
 			j.start()
 		for j in jobs :
 			j.join()
 	else:
-		savesamples(PATH, chromosome, dataframe, listenames,0, namedir="/floatfiles/")
+		save_samples(PATH, chromosome, dataframe, listenames,0, namedir="/floatfiles/")
 
-def printProgress(iteration, total, prefix = '', suffix = '', decimals = 1, barLength = 100):
+def print_progress(iteration, total, prefix='', suffix='', decimals=1, barLength=100):
 	"""
 	Call in a loop to create terminal progress bar
 	@params:
@@ -157,7 +157,7 @@ def decode_position(totest, LN) :
 		position = -1
 	return AL1[0], AL2[0], position
 
-def mask_data(_PATH, percentpass, OUTPUTPATH=None, PREFIXSUB = "/10PER_", VERBOSE=False) :
+def mask_data(_PATH, percentpass, OUTPUTPATH=None, PREFIXSUB="/10PER_", VERBOSE=False) :
 	### percentpass = nb between 0 and 1
 
 	print("Starting to filter data from {0} at {1}. ({2} pass)".format(_PATH,datetime.datetime.now(),percentpass))
@@ -176,7 +176,7 @@ def mask_data(_PATH, percentpass, OUTPUTPATH=None, PREFIXSUB = "/10PER_", VERBOS
 		for sample in files :
 			
 			namesample = sample.split("/")[-1].split(".")[0].split("_")[-1]
-			nblines = getnblines(sample)
+			nblines = get_nb_lines(sample)
 			subsetoflines = random.sample(range(nblines), math.floor(nblines*percentpass))
 
 			with gzip.open(sample, "rt", encoding='utf-8') as infile, open(OUTPUTPATH+"/"+chromname+"/"+PREFIXSUB+namesample+".txt", "w") as outfile:
@@ -188,18 +188,18 @@ def mask_data(_PATH, percentpass, OUTPUTPATH=None, PREFIXSUB = "/10PER_", VERBOS
 
 			if not LOGGING :
 				i +=1
-				printProgress(i,len(chromosomes)*len(files)-1, decimals = 3)
+				print_progress(i,len(chromosomes)*len(files)-1, decimals = 3)
 			elif VERBOSE == True :
 				print("{0}/{1} files tested. Date : {2}".format(i, len(chromosomes*len(files)), str(datetime.datetime.now())))
 	print("\nData from {0} filtered at {1}. ({2} pass)".format(_PATH,datetime.datetime.now(),percentpass))
 
-def getnblines(infile) :
+def get_nb_lines(infile) :
 	with gzip.open(infile, "rt") as f:
 	    for i, l in enumerate(f):
 	        pass
 	return i+1
 
-def createchromdeirs(_PATH, listofchroms):
+def create_chrom_dirs(_PATH, listofchroms):
 	os.mkdir(_PATH+"/Train")
 	os.mkdir(_PATH+"/Test")
 	os.mkdir(_PATH+"/Valid")
@@ -208,11 +208,11 @@ def createchromdeirs(_PATH, listofchroms):
 		os.mkdir(_PATH+"/Test/"+chroms)
 		os.mkdir(_PATH+"/Valid/"+chroms)
 
-def cutfiles(filelist, sizeofoutputfiles, OUTPUTPATH, copy=True) :
+def cut_files(filelist, sizeofoutputfiles, OUTPUTPATH, copy=True) :
 
 	for file in filelist :
 		filename = file.split("/")[-1].split(".")[0]
-		nblines = getnblines(file)
+		nblines = get_nb_lines(file)
 		nboffiles = math.ceil(nblines/sizeofoutputfiles)
 		overlapping = math.floor((sizeofoutputfiles-nblines%sizeofoutputfiles)/nboffiles)
 		

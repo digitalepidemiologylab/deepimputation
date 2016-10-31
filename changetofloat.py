@@ -5,7 +5,7 @@ import math
 import time
 import datetime
 
-from usefulfunctions import *
+import usefulfunctions as uf
 from params import *
 
 if __name__ == "__main__" :
@@ -44,7 +44,7 @@ if __name__ == "__main__" :
 	####load the meta data in a pandas data frame
 	_meta = pd.read_csv(dirs+"/_meta.txt.gz", sep ="\t",index_col=False)
 
-	listfiles = list_elements(dirs+"/", extension=".txt.gz", exception=[dirs+"/_meta.txt.gz", dirs+"_meta.txt.gz", dirs+"/_comments.txt.gz", dirs+"_comments.txt.gz"])
+	listfiles = uf.list_elements(dirs+"/", extension=".txt.gz", exception=[dirs+"/_meta.txt.gz", dirs+"_meta.txt.gz", dirs+"/_comments.txt.gz", dirs+"_comments.txt.gz"])
 	nbprocessedfiles = 0
 
 	batchiter = 0
@@ -64,7 +64,7 @@ if __name__ == "__main__" :
 			batchiter += 1
 		else :
 			####Reinitialize stuff
-			writeencodeoutput(PATHINPUT, chromosome , df, SVE, liste)
+			uf.write_encoded_output(PATHINPUT, chromosome , df, SVE, liste)
 			batchiter = 0
 			liste = []
 			jobs=[]

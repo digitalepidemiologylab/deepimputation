@@ -9,10 +9,10 @@ import datetime
 if not os.path.isfile("./params.py"): #### If custom version of params doesn't exist, copy template
 	subprocess.call("cp paramstemplate.py params.py", shell=True)
 	from params import *
-	from usefulfunctions import *
+	import usefulfunctions as uf
 else:
 	from params import *
-	from usefulfunctions import *
+	import usefulfunctions as uf
 ################################################################################################################
 
 # ######################################################################################################
@@ -22,32 +22,32 @@ else:
 # PATHSUBSET = PATHINPUT
 # ######################################################################################################
 
-listchromsdirs = list_elements(PATHENCODED, _type = "dir")
+listchromsdirs = uf.list_elements(PATHENCODED, _type = "dir")
 listofchroms = [chroms.split("/")[-1] for chroms in listchromsdirs]
 
 
 if not os.path.isdir(PATHSUBSET+"/Subsets"): ####Create the tree for the repartition of the dataset
 	os.mkdir(PATHSUBSET+"/Subsets")
 	os.mkdir(PATHSUBSET+"/Subsets/FULL")	
-	createchromdeirs(PATHSUBSET+"/Subsets/FULL",listofchroms)
+	create_chrom_dirs(PATHSUBSET+"/Subsets/FULL",listofchroms)
 	subprocess.call("cp -rf {0} {1}".format(PATHSUBSET+"/Subsets/FULL",PATHSUBSET+"/Subsets/10_PERCENT"), shell=True)
 	subprocess.call("cp -rf {0} {1}".format(PATHSUBSET+"/Subsets/FULL ",PATHSUBSET+"/Subsets/1_PERCENT"), shell=True)
 elif not os.path.isdir(PATHSUBSET+"/Subsets/FULL"):
 	os.mkdir(PATHSUBSET+"/Subsets/FULL")	
-	createchromdeirs(PATHSUBSET+"/Subsets/FULL",listofchroms)
+	create_chrom_dirs(PATHSUBSET+"/Subsets/FULL",listofchroms)
 	subprocess.call("rm -r {0}/10_PERCENT {0}/1_PERCENT".format(PATHSUBSET+"/Subsets"), shell=True)
 	subprocess.call("cp -rf {0} {1}".format(PATHSUBSET+"/Subsets/FULL",PATHSUBSET+"/Subsets/10_PERCENT"), shell=True)
 	subprocess.call("cp -rf {0} {1}".format(PATHSUBSET+"/Subsets/FULL ",PATHSUBSET+"/Subsets/1_PERCENT"),shell=True)
 else :
 	subprocess.call("rm -r {0}/10_PERCENT {0}/1_PERCENT".format(PATHSUBSET+"/Subsets"), shell=True)
 	os.mkdir(PATHSUBSET+"/Subsets/10_PERCENT")	
-	createchromdeirs(PATHSUBSET+"/Subsets/10_PERCENT",listofchroms)
+	create_chrom_dirs(PATHSUBSET+"/Subsets/10_PERCENT",listofchroms)
 	subprocess.call("cp -rf {0} {1}".format(PATHSUBSET+"/Subsets/10_PERCENT/ ",PATHSUBSET+"/Subsets/1_PERCENT"),shell=True)
 
 #################Reorganise the files
 for chroms in listchromsdirs :
 
-	listsamples = list_elements(chroms+"/", extension=".txt.gz")
+	listsamples = uf.list_elements(chroms+"/", extension=".txt.gz")
 	totalsamples = len(listsamples)
 
 	for samples in range(int(math.floor(totalsamples*PROPTEST))) :
@@ -73,13 +73,13 @@ for chroms in listchromsdirs :
 
 #################Cut the files to get training examples of similar size
 #################Filter 90% of the positions
-subsets = list_elements(PATHSUBSET + "/Subsets/FULL/", _type = "dir")
+subsets = uf.list_elements(PATHSUBSET + "/Subsets/FULL/", _type = "dir")
 for sub in subsets :
 	for chroms in listofchroms :
-		cutfiles(list_elements(sub +"/" + chroms + "/", extension=".txt.gz"), SIZEFRAGMENTS, sub +"/" + chroms, copy=False)
+		cut_files(uf.list_elements(sub +"/" + chroms + "/", extension=".txt.gz"), SIZEFRAGMENTS, sub +"/" + chroms, copy=False)
 	mask_data(sub + "/", 0.1, OUTPUTPATH=PATHSUBSET+"/Subsets/10_PERCENT/"+sub.split("/")[-1])
 
 #################Filter 90% of the positions of the prefiltered dataset
-subsets = list_elements(PATHSUBSET + "/Subsets/10_PERCENT/", _type = "dir")
+subsets = uf.list_elements(PATHSUBSET + "/Subsets/10_PERCENT/", _type = "dir")
 for sub in subsets :
 	mask_data(sub + "/", 0.1, OUTPUTPATH=PATHSUBSET+"/Subsets/1_PERCENT/"+sub.split("/")[-1], PREFIXSUB = "/1PER_")

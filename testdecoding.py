@@ -10,10 +10,10 @@ import os
 if not os.path.isfile("./params.py") : #### If custom version of params doesn't exist, copy template
 	subprocess.call("cp paramstemplate.py params.py", shell = True)
 	from params import *
-	from usefulfunctions import *
+	import usefulfunctions as uf
 else :
 	from params import *
-	from usefulfunctions import *
+	import usefulfunctions as uf
 
 #####################################################################################################
 CHROMTOBETESTED = str(%%%%%SELECTYOURFAVORITECHROMOSOME%%%%%) ####value replaced py the script generate scripts
@@ -35,7 +35,7 @@ errors_next_pos = []
 
 _meta = pd.read_csv(PATHORIGIN+"/"+CHROMTOBETESTED+"/_meta.txt.gz", sep = "\t", index_col=False).drop(["#CHROM","ID","QUAL", "FILTER", "INFO", "FORMAT"], 1)
 
-files = list_elements(PATHENCODED + CHROMTOBETESTED + "/", extension = ".txt.gz")
+files = uf.list_elements(PATHENCODED + CHROMTOBETESTED + "/", extension = ".txt.gz")
 
 
 for j in range(min(nbfilesmax, len(files))) :
@@ -50,7 +50,7 @@ for j in range(min(nbfilesmax, len(files))) :
 
 	for i in range(nbtests):
 		totest = random.choice(_meta.totest.tolist())
-		A1, A2, position = decode_position(totest, LN)
+		A1, A2, position = uf.decode_position(totest, LN)
 
 
 		if position == -1 :
@@ -63,7 +63,7 @@ for j in range(min(nbfilesmax, len(files))) :
 			errors_next_pos.append(_meta.iloc[min(index+1, _meta.shape[0]), 0])
 
 			if not LOGGING :
-				printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
+				uf.print_progress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
 			if VERBOSE == True :
 				print("{0}/{1} files tested. Date : {2}".format(i, nbtests, str(datetime.datetime.now())))
 			continue
@@ -101,7 +101,7 @@ for j in range(min(nbfilesmax, len(files))) :
 			errors_next_pos.append(_meta.iloc[min(index+1, _meta.shape[0]), 0])
 
 		if not LOGGING :
-			printProgress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
+			uf.print_progress(j*nbtests+i,nbtests*min(nbfilesmax, len(files))-1, decimals = 3)
 		if VERBOSE == True :
 			print("{0}/{1} files tested. Date : {2}".format(i, nbtests, str(datetime.datetime.now())))
 

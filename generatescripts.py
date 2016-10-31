@@ -6,10 +6,10 @@ import time
 if not os.path.isfile("./params.py") : #### If custom version of params doesn't exist, copy template
 	subprocess.call("cp paramstemplate.py params.py", shell = True)
 	from params import *
-	from usefulfunctions import *
+	import usefulfunctions as uf
 else:
 	from params import *
-	from usefulfunctions import *	
+	import usefulfunctions as uf	
 
 numberofjobs = 11
 tobeprocessed = []
@@ -23,7 +23,7 @@ subprocess.call("rm ./*log*.log", shell = True)
 subprocess.call("rm ./nohup.out", shell = True)
 
 #### Verify which chroms where not already processed
-Filesinpath = list_elements(PATHINPUT, _type="dir", exception=[PATHINPUT+"encodeddata", PATHINPUT+"floatfiles", PATHINPUT+"Subsets"])
+Filesinpath = uf.list_elements(PATHINPUT, _type="dir", exception=[PATHINPUT+"encodeddata", PATHINPUT+"floatfiles", PATHINPUT+"Subsets"])
 print(Filesinpath)
 for i in range(len(Filesinpath)) :
 	Filesinpath[i] = int(Filesinpath[i].replace(PATHINPUT, ""))
@@ -32,7 +32,7 @@ if not os.path.isdir(PATHINPUT+"/encodeddata/") :
 	os.mkdir(PATHINPUT+"/encodeddata/")
 	RemainingChrs = Filesinpath
 else :
-	ProcessedChrs = list_elements(PATHINPUT+"/encodeddata/",_type="dir")
+	ProcessedChrs = uf.list_elements(PATHINPUT+"/encodeddata/",_type="dir")
 	for i in range(len(ProcessedChrs)) :
 		ProcessedChrs[i] = int(ProcessedChrs[i].replace(PATHINPUT+"/encodeddata/", ""))
 	RemainingChrs  = [i for i in Filesinpath if i not in ProcessedChrs ]
