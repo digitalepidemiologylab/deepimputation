@@ -25,7 +25,7 @@ else:
 listchromsdirs = uf.list_elements(PATHENCODED, _type = "dir")
 listofchroms = [chroms.split("/")[-1] for chroms in listchromsdirs]
 
-
+"""
 if not os.path.isdir(PATHSUBSET+"/Subsets"): ####Create the tree for the repartition of the dataset
 	os.mkdir(PATHSUBSET+"/Subsets")
 	os.mkdir(PATHSUBSET+"/Subsets/FULL")	
@@ -71,7 +71,7 @@ for chroms in listchromsdirs :
 			os.mkdir(PATHSUBSET+"/Subsets/FULL/Train/"+chroms.split("/")[-1])
 		subprocess.call("mv {0} {1}".format(samples, PATHSUBSET+"/Subsets/FULL/Train/"+chroms.split("/")[-1]), shell=True)
 
-
+"""
 
 #################Cut the files to get training examples of similar size
 #################Filter 90% of the positions
@@ -79,9 +79,10 @@ subsets = uf.list_elements(PATHSUBSET + "/Subsets/FULL/", _type = "dir")
 for sub in subsets :
 	for chroms in listofchroms :
 		uf.cut_files(uf.list_elements(sub +"/" + chroms + "/", extension=".txt.gz"), SIZEFRAGMENTS, sub +"/" + chroms, copy=False)
-	uf.mask_data(sub + "/", 0.1, OUTPUTPATH=PATHSUBSET+"/Subsets/10_PERCENT/"+sub.split("/")[-1])
-
+	#uf.mask_data(sub + "/", 0.1, OUTPUTPATH=PATHSUBSET+"/Subsets/10_PERCENT/"+sub.split("/")[-1])
+"""
 #################Filter 90% of the positions of the prefiltered dataset
 subsets = uf.list_elements(PATHSUBSET + "/Subsets/10_PERCENT/", _type = "dir")
 for sub in subsets :
 	uf.mask_data(sub + "/", 0.1, OUTPUTPATH=PATHSUBSET+"/Subsets/1_PERCENT/"+sub.split("/")[-1], PREFIXSUB = "/1PER_")
+"""
